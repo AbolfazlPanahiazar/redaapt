@@ -21,7 +21,7 @@ const Navbar: FC = (): ReactElement => {
       <div className="md:flex-[0.5] flex-initial justify-center items-center">
         <img src={logo} alt="logo" className="w-32 cursor-pointer" />
       </div>
-      <ul className="text-white md:flex hiddent flex-row justify-between items-center flex-initial">
+      <ul className="text-white md:flex hidden flex-row justify-between items-center flex-initial">
         {["Market", "Exchange", "Tutorials", "Wallets"].map((item, index) => (
           <NavbarItem key={item + index} title={item} />
         ))}
