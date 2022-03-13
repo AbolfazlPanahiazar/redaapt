@@ -1,8 +1,9 @@
-import { FC, ReactElement, useState } from "react";
+import { FC, ReactElement, useState, useContext } from "react";
 import { AiFillPlayCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
 
+import { TransactionContext } from "../context/TransactionContext";
 import { Loader } from "./";
 
 const commonStyles =
@@ -30,10 +31,28 @@ const Input: FC<{
 
 const Welcome: FC = (): ReactElement => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {
+    connectWallet,
+    currenctAccount,
+    formData,
+    setFormData,
+    handleChange,
+    sendTransaction,
+  } = useContext(TransactionContext);
 
-  const connectWallet = () => {};
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    const { addressTo, amount, keyword, message } = formData;
 
-  const handleSubmit = () => {};
+    console.log(addressTo, amount, keyword, message);
+
+    if (!addressTo || !amount || !keyword || !message) {
+      return;
+    }
+
+    console.log("setndTransaction")
+    sendTransaction();
+  };
 
   return (
     <div className="flex w-full justify-center items-center">
@@ -46,13 +65,17 @@ const Welcome: FC = (): ReactElement => {
             Explore the crypto world, buy and sell cryptocurrencies easily on
             Krypto.
           </p>
-          <button
-            type="button"
-            onClick={connectWallet}
-            className="flex flex-row justify-center items-center my-2 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
-          >
-            <p className="text-white text-base font-semibold">Connect Wallet</p>
-          </button>
+          {!currenctAccount && (
+            <button
+              type="button"
+              onClick={connectWallet}
+              className="flex flex-row justify-center items-center my-2 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
+            >
+              <p className="text-white text-base font-semibold">
+                Connect Wallet
+              </p>
+            </button>
+          )}
           <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
             <div className={`rounded-tl-xl ${commonStyles}`}>Reliability</div>
             <div className={commonStyles}>Security</div>
@@ -86,29 +109,29 @@ const Welcome: FC = (): ReactElement => {
               placeholder="Address to"
               name="addressTo"
               type="text"
-              value=""
-              handleChange={() => {}}
+              value={formData?.addressTo}
+              handleChange={handleChange}
             />
             <Input
               placeholder="Amount (ETH)"
               name="amount"
               type="number"
-              value=""
-              handleChange={() => {}}
+              value={formData?.amount}
+              handleChange={handleChange}
             />
             <Input
               placeholder="Keyword (Gif)"
               name="keyword"
               type="text"
-              value=""
-              handleChange={() => {}}
+              value={formData?.keyword}
+              handleChange={handleChange}
             />
             <Input
               placeholder="Enter Message"
               name="message"
               type="text"
-              value=""
-              handleChange={() => {}}
+              value={formData?.message}
+              handleChange={handleChange}
             />
             <div className="h-[1px] w-full bg-gray-400 my-2" />
 
